@@ -5,6 +5,7 @@ const titleField = $.querySelector("#title");
 const authorFiled = $.querySelector("#author");
 const year = $.querySelector("#year");
 const thead = $.querySelector("thead");
+
 // functions
 function numberValidator(e) {
   if (e.which < 48 || e.which > 57) {
@@ -38,7 +39,9 @@ function bookGenerator(bookObj) {
   titleTd.innerHTML = bookObj.bookTitle;
   authorTd.innerHTML = bookObj.bookAuthor;
   yearTd.innerHTML = bookObj.publishYear;
+  //   adding elements value
   trElm.append(titleTd, authorTd, yearTd);
+  //   appending new book to dom
   thead.append(trElm);
 }
 
