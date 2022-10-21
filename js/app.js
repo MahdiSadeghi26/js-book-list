@@ -5,7 +5,7 @@ const titleField = $.querySelector("#title");
 const authorFiled = $.querySelector("#author");
 const year = $.querySelector("#year");
 const thead = $.querySelector("thead");
-
+let bookArray = [];
 // functions
 function numberValidator(e) {
   if (e.which < 48 || e.which > 57) {
@@ -44,7 +44,15 @@ function bookGenerator(bookObj) {
   //   appending new book to dom
   thead.append(trElm);
 }
+// if localStorage is empty(add books array)
+function getLocalStorage() {
+  if (!localStorage.getItem("books")) {
+    localStorage.setItem("books", JSON.stringify(bookArray));
+  }
+}
+
 
 // event listeners
+window.addEventListener("load", getLocalStorage);
 year.addEventListener("keypress", numberValidator);
 inputForm.addEventListener("submit", newBook);
