@@ -5,13 +5,12 @@ const titleField = $.querySelector("#title");
 const authorFiled = $.querySelector("#author");
 const year = $.querySelector("#year");
 const thead = $.querySelector("thead");
+const bookList = $.querySelector("#book-list");
 let bookArray = [];
 // functions
 // if localStorage is empty(add books array)
-function getLocalStorage() {
-	if (!localStorage.getItem("books")) {
-		localStorage.setItem("books", JSON.stringify(bookArray));
-	}
+function setLocalStorage(bookArr) {
+	localStorage.setItem("books", JSON.stringify(bookArr));
 }
 
 function numberValidator(e) {
@@ -20,7 +19,7 @@ function numberValidator(e) {
 		// this function preventing inputing string in year filed!
 	}
 }
-
+// adding new book
 function newBook(e) {
 	e.preventDefault();
 	if (titleField.value.length != 0 && authorFiled.value.length != 0 && year.length != 0) {
@@ -30,25 +29,29 @@ function newBook(e) {
 			publishYear: year.value,
 		};
 		bookArray.push(newBook);
-		bookGenerator(newBook);
-		addToLocalStorage();
+		bookGenerator(bookArray);
+		setLocalStorage(bookArray);
 	}
 }
-// rendering in dom
-function bookGenerator(bookObj) {
-	// creating Elements
-	let trElm = $.createElement("tr");
-	let titleTd = $.createElement("td");
-	let authorTd = $.createElement("td");
-	let yearTd = $.createElement("td");
-	// passing value
-	titleTd.innerHTML = bookObj.bookTitle;
-	authorTd.innerHTML = bookObj.bookAuthor;
-	yearTd.innerHTML = bookObj.publishYear;
-	//   adding elements value
-	trElm.append(titleTd, authorTd, yearTd);
-	//   appending new book to dom
-	thead.append(trElm);
+// add in dom
+function bookGenerator(books) {
+	// empty current value in dom(render again)
+	bookList.innerHTML = "";
+	books.forEach((element) => {
+		// creating Elements
+		let trElm = $.createElement("tr");
+		let titleTd = $.createElement("td");
+		let authorTd = $.createElement("td");
+		let yearTd = $.createElement("td");
+		// passing value
+		titleTd.innerHTML = element.bookTitle;
+		authorTd.innerHTML = element.bookAuthor;
+		yearTd.innerHTML = element.publishYear;
+		//   adding elements value
+		trElm.append(titleTd, authorTd, yearTd);
+		//   appending new book to dom
+		bookList.append(trElm);
+	});
 }
 // adding new Book to localStorage
 function addToLocalStorage() {
@@ -59,7 +62,18 @@ function addToLocalStorage() {
 	// push updated array to localstorage
 	let pushToLs = localStorage.setItem("books", JSON.stringify(bookArray));
 }
+// load books from localStorage
+function loadFromlocalStorage() {
+	let loadBooks = JSON.parse(localStorage.getItem("books"));
+	if (loadBooks) {
+		bookArray = loadBooks;
+		console.log(bookArray);
+	} else {
+		bookArray = [];
+	}
+	bookGenerator(bookArray);
+}
 // event listeners
-window.addEventListener("load", getLocalStorage);
+window.addEventListener("load", loadFromlocalStorage);
 year.addEventListener("keypress", numberValidator);
 inputForm.addEventListener("submit", newBook);
