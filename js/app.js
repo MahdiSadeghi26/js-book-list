@@ -24,6 +24,7 @@ function newBook(e) {
 	e.preventDefault();
 	if (titleField.value.length != 0 && authorFiled.value.length != 0 && year.length != 0) {
 		let newBook = {
+			id:bookArray.length +1,
 			bookTitle: titleField.value,
 			bookAuthor: authorFiled.value,
 			publishYear: year.value,
@@ -42,13 +43,13 @@ function bookGenerator(books) {
 		let trElm = $.createElement("tr");
 		let titleTd = $.createElement("td");
 		let authorTd = $.createElement("td");
-		let yearTd = $.createElement("td");
+		let yearTd = $.createElement("td");		
 		// passing value
 		titleTd.innerHTML = element.bookTitle;
 		authorTd.innerHTML = element.bookAuthor;
 		yearTd.innerHTML = element.publishYear;
 		//   adding elements value
-		trElm.append(titleTd, authorTd, yearTd);
+		trElm.append(titleTd, authorTd, yearTd,deleteBtn);
 		//   appending new book to dom
 		bookList.append(trElm);
 	});
@@ -62,7 +63,7 @@ function addToLocalStorage() {
 	// push updated array to localstorage
 	let pushToLs = localStorage.setItem("books", JSON.stringify(bookArray));
 }
-// load books from localStorage
+// load books from localStorage	
 function loadFromlocalStorage() {
 	let loadBooks = JSON.parse(localStorage.getItem("books"));
 	if (loadBooks) {
@@ -73,6 +74,7 @@ function loadFromlocalStorage() {
 	}
 	bookGenerator(bookArray);
 }
+
 // event listeners
 window.addEventListener("load", loadFromlocalStorage);
 year.addEventListener("keypress", numberValidator);
