@@ -37,6 +37,8 @@ function newBook(e) {
     bookGenerator(bookArray);
     setLocalStorage(bookArray);
 	makeInputsEmpty()
+}else{
+	alert('لطفا همه ورودی های را پر کنید')
 }
   
 }
