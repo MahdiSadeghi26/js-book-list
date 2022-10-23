@@ -36,7 +36,9 @@ function newBook(e) {
     bookArray.push(newBook);
     bookGenerator(bookArray);
     setLocalStorage(bookArray);
-  }
+	makeInputsEmpty()
+}
+  
 }
 // add in dom
 function bookGenerator(books) {
@@ -50,7 +52,7 @@ function bookGenerator(books) {
     let yearTd = $.createElement("td");
     let deleteBtn = $.createElement("button");
     deleteBtn.innerHTML = "X";
-    deleteBtn.setAttribute("onclick",`removeBook(${element.id})`);
+    deleteBtn.setAttribute("onclick", `removeBook(${element.id})`);
     // passing value
     titleTd.innerHTML = element.bookTitle;
     authorTd.innerHTML = element.bookAuthor;
@@ -70,6 +72,12 @@ function addToLocalStorage() {
   // push updated array to localstorage
   let pushToLs = localStorage.setItem("books", JSON.stringify(bookArray));
 }
+// making inputs empty
+function makeInputsEmpty() {
+  titleField.value = "";
+  authorFiled.value = "";
+  year.value = "";
+}
 // load books from localStorage
 function loadFromlocalStorage() {
   let loadBooks = JSON.parse(localStorage.getItem("books"));
@@ -84,11 +92,10 @@ function loadFromlocalStorage() {
 function removeBook(bookId) {
   let bookArr = JSON.parse(localStorage.getItem("books"));
   bookArray = bookArr;
-  let findBookIndex = bookArray.findIndex((element) =>element.id== bookId);
-  bookArray.splice(findBookIndex,1)
-  addToLocalStorage(bookArray)
-  bookGenerator(bookArray)
-	
+  let findBookIndex = bookArray.findIndex((element) => element.id == bookId);
+  bookArray.splice(findBookIndex, 1);
+  addToLocalStorage(bookArray);
+  bookGenerator(bookArray);
 }
 // event listeners
 window.addEventListener("load", loadFromlocalStorage);
